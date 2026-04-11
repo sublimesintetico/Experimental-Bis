@@ -12,8 +12,8 @@ export default async function handler(req, res) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            from: "orar@sublimesintetico.com",
-            to: "sinteticosublime@gmail.com",
+            from: "onboarding@resend.dev",
+            to: "tgganm@gmail.com",
             subject: `Oración — ${fecha}`,
             html: `
                 <p><strong>Texto:</strong> ${texto}</p>
