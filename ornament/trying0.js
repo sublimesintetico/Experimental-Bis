@@ -212,16 +212,13 @@ async function orar() {
 			.map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
 			.join("\n") || "Grilla vacía";
 
-		await fetch("/api/orar", {
+		const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				texto: document.getElementById("texto-input")?.value?.trim() || "(sin texto)",
-				descripcion,
-				imagen: imagenBase64,
-				fecha: new Date().toLocaleString("es-AR"),
-			}),
+			body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
 		});
+
+		if (!res.ok) throw new Error(`API error: ${res.status}`);
 
 		boton.textContent = "Oración enviada";
 		window.print();
@@ -237,11 +234,3 @@ async function orar() {
 		setTimeout(() => (boton.textContent = "Orar"), 3000);
 	}
 }
-
-const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
-});
-
-if (!res.ok) throw new Error(`API error: ${res.status}`);
