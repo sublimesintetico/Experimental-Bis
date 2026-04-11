@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             `,
             attachments: [
                 {
-                    filename: "grilla.png",
+                    filename: "grilla.jpg",
                     content: base64Data,
                 }
             ]
