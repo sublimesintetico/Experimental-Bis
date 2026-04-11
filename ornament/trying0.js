@@ -180,6 +180,7 @@ async function orar() {
     const boton = document.getElementById("print-button");
     const textoInput = document.getElementById("texto-input");
     const texto = textoInput?.value?.trim() || "(sin texto)";
+	const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
 
     boton.textContent = "Orando...";
     boton.disabled = true;
