@@ -189,7 +189,7 @@ async function orar() {
 		const grilla = document.getElementById("grid");
 		const canvas = await html2canvas(grilla, {
 			backgroundColor: "#ffffff",
-			scale: 1,
+			scale: 3,
 			useCORS: true,
 			allowTaint: true,
 			logging: true,
@@ -224,7 +224,6 @@ async function orar() {
 		if (!res.ok) throw new Error(`API error: ${res.status}`);
 
 		boton.textContent = "Oración enviada";
-		window.print();
 		setTimeout(() => {
 			boton.textContent = "Orar";
 			boton.disabled = false;
