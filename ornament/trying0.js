@@ -193,6 +193,7 @@ async function orar() {
 			ignoreElements: (el) =>
 				el.classList.contains("print-button") || el.classList.contains("form"),
 		});
+
 		const imagenBase64 = canvas.toDataURL("image/jpeg", 0.6); // jpeg + compresión
 
 		const imgs = grilla.querySelectorAll("img");
@@ -236,3 +237,11 @@ async function orar() {
 		setTimeout(() => (boton.textContent = "Orar"), 3000);
 	}
 }
+
+const res = await fetch("/api/orar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
+});
+
+if (!res.ok) throw new Error(`API error: ${res.status}`);
