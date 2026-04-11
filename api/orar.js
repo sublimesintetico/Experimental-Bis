@@ -13,8 +13,8 @@ export default async function handler(req, res) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            from: "onboarding@resend.dev",
-            to: "tgganm@gmail.com",
+            from: "orar@sublimesintetico.com",
+            to: "sinteticosublime@gmail.com",
             subject: `Oración — ${fecha}`,
             html: `
                 <p><strong>Grilla:</strong></p>

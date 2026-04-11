@@ -189,7 +189,7 @@ async function orar() {
 		const grilla = document.getElementById("grid");
 		const canvas = await html2canvas(grilla, {
 			backgroundColor: "#ffffff",
-			scale: 3,
+			scale: 4,
 			useCORS: true,
 			allowTaint: true,
 			logging: true,
