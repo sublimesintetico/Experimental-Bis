@@ -2,8 +2,9 @@ export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
     const { texto, descripcion, imagen, fecha } = req.body;
-    
-    console.log("Body recibido:", { texto, descripcion, fecha, imagenLength: imagen?.length });
+
+    // Separar el header del base64 puro
+    const base64Data = imagen.replace(/^data:image\/\w+;base64,/, "");
 
     const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -19,15 +20,20 @@ export default async function handler(req, res) {
                 <p><strong>Texto:</strong> ${texto}</p>
                 <p><strong>Grilla:</strong></p>
                 <pre>${descripcion}</pre>
-                <img src="${imagen}" style="max-width:100%"/>
+                <p>La grilla está adjunta como imagen.</p>
             `,
+            attachments: [
+                {
+                    filename: "grilla.png",
+                    content: base64Data,
+                }
+            ]
         }),
     });
 
     const data = await response.json();
     console.log("Respuesta Resend:", data);
-    
+
     if (!response.ok) return res.status(500).json(data);
     return res.status(200).json({ ok: true });
 }
-
