@@ -187,17 +187,14 @@ async function orar() {
 
     try {
 		const grilla = document.getElementById("grid");
-		const rect = grilla.getBoundingClientRect();
 
 		const canvas = await html2canvas(grilla, {
 			backgroundColor: "#ffffff",
 			scale: 1,
 			useCORS: true,
 			allowTaint: true,
-			x: rect.left,
-			y: rect.top,
-			width: rect.width,
-			height: rect.height,
+			scrollX: -window.scrollX,
+			scrollY: -window.scrollY,
 			ignoreElements: (el) =>
 				el.classList.contains("print-button") || el.classList.contains("form"),
 		});
