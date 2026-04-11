@@ -1,0 +1,318 @@
+p{
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+font-family: "EB Garamond", serif;
+font-weight: 400;
+font-size: 0.8em;
+letter-spacing: -0.025em;
+line-height: 0.9; 
+text-align: center;
+}
+
+h1{
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+font-family: "EB Garamond", serif;
+font-weight: 400;
+font-size: 0.8em;
+letter-spacing: -0.025em;
+line-height: 0.9; 
+text-align: center;
+}
+
+h4{
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+font-family: "EB Garamond", serif;
+font-weight: 400;
+font-size: 0.8em;
+letter-spacing: -0.025em;
+line-height: 0.9; 
+}
+
+h2{
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+font-family: "EB Garamond", serif;
+font-weight: 400;
+font-size: 0.8em;
+letter-spacing: -0.025em;
+line-height: 0.9; 
+text-align: center;
+}
+
+h3{
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+font-family: "EB Garamond", serif;
+font-weight: 400;
+font-size: 0.8em;
+letter-spacing: -0.025em;
+line-height: 0.9; 
+}
+
+@media print {
+
+    body {
+    --paged-layout: booklet;
+    }
+    
+    @page {
+        size: 17cm 27cm;
+        margin-top: 1.2cm;
+        margin-bottom: 6cm;
+        marks: crop;
+        bleed: 6mm;
+    }
+
+    @page:left {
+        margin-top: 1.2cm;
+        margin-right: 7cm; 
+        margin-left: 1cm; 
+        bleed: 6mm;
+        marks: crop;
+        
+        @top-right {
+            content: string(title,first);
+            font-family: "EB Garamond", serif;
+            text-align: right;
+            font-weight: 400;
+            font-size: 12pt;
+            letter-spacing: -0.025em;
+            line-height: 0.9; 
+            margin-right: -3cm;
+            margin-bottom: 0.5cm;
+        }
+
+        @top-right-corner {
+            content: string(paginas, first);
+            font-family: "EB Garamond", serif;
+            text-align: right;
+            font-weight: 400;
+            font-size: 12pt;
+            letter-spacing: -0.025em;
+            line-height: 0.9; 
+            margin-right: 4cm;
+            margin-top: 1cm;
+            z-index: 10;
+        }
+
+        @right-middle {
+            content: element(imgLeft);
+        }
+
+
+        @bottom-left {
+            align-content: top;
+            content: string(frances);
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 8pt;
+            letter-spacing: -0.025em;
+            line-height: 0.8; 
+            margin-top: 0.5cm;
+            margin-right: -3cm;
+            margin-bottom: 0.5cm;
+            text-align: left;
+        };
+
+        @bottom-center {
+            align-content: top;
+            content: string(franceses);
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 8pt;
+            letter-spacing: -0.025em;
+            line-height: 0.8; 
+            margin-top: 0.5cm;
+            margin-bottom: 0.5cm;
+            margin-left: 3.5cm;
+            margin-right: -4.3cm;
+            text-align: left;
+        };
+
+    }
+
+    @page:right {
+        margin-right: 1cm; 
+        margin-left: 7cm; 
+        bleed: 6mm;
+        marks: crop;
+
+        @top-left {
+            content: string(title);
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 12pt;
+            letter-spacing: -0.025em;
+            line-height: 0.9; 
+            margin-left: -3cm;
+            margin-bottom: 0.5cm;
+        }
+
+        @top-left-corner {
+            content: string(paginas, first);
+            font-family: "EB Garamond", serif;
+            text-align: right;
+            font-weight: 400;
+            font-size: 12pt;
+            letter-spacing: -0.025em;
+            line-height: 0.9; 
+            margin-right: 2.4cm;
+            margin-top: 1cm;
+        }
+
+        @left-middle {
+            content: element(imgRight);
+        }
+
+        @bottom-left {
+            content: string(frances);
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 8pt;
+            letter-spacing: -0.025em;
+            line-height: 0.8; 
+            margin-top: 0.5cm;
+            margin-left: -3cm;
+            margin-bottom: 0.5cm;
+            text-align: left;
+        };
+
+        @bottom-center {
+            content: string(franceses);
+            font-family: "EB Garamond", serif;
+            font-weight: 400;
+            font-size: 8pt;
+            letter-spacing: -0.025em;
+            line-height: 0.8; 
+            margin-top: 0.5cm;
+            margin-bottom: 0.5cm;
+            margin-left: 0.5cm;
+            margin-right: -1.3cm;
+            text-align: left;
+        };
+    }
+
+    @page:blank {
+        content: none;
+    }
+
+    .ornament-marge-left {
+        position: running(imgLeft);
+        margin-top: -2cm;
+        width: 320%;
+    }
+
+    .ornament-marge-right {
+        position: running(imgRight);
+        margin-top: -2cm;
+        width: 320%;
+    }
+
+    .full-page-image {
+        --pagedjs-full-page: page
+    }
+
+    .colonnes {
+        column-count: 1;
+        margin-top: 0.5em;
+    }
+
+    .index {
+        break-after: always;
+    }
+
+    .title-page {
+        content-visibility: none;
+        break-after: always;
+    }
+
+    p{
+        font-size: 12pt;
+        text-align: left;
+        margin-right: 1.1cm;
+    }
+
+    .paged {
+        font-size: 12pt;
+        text-align: left;
+        string-set: paginas content(text)
+    }
+
+    h1{
+        font-size: 12pt;
+        text-align: left;
+        string-set: title content(text);
+    }
+
+    h2{
+        font-size: 12pt;
+        text-align: left;
+        break-after: always;
+        content: none;
+    }
+
+    h3 {
+        font-size: 8pt;
+        line-height: 0.8;
+        text-align: left;
+        column-count: 2;
+        margin-left: -3cm;
+    }
+
+    /* h4{
+        font-size: 12pt;
+        text-align: left;
+        string-set: paged content(text);    
+    } */
+
+    .frances1 {
+        font-size: 8pt;
+        text-align: left;
+        margin-left: 1.5cm;
+
+        string-set: frances content(text);    
+    }
+
+    .frances2 {
+        font-size: 8pt;
+        text-align: left;
+        margin-left: 1.5cm;
+        string-set: franceses content(text);    
+    }
+
+
+    .text-content,
+    .colophon-show {
+        display: block;
+    }
+
+    .colophon-show {
+        break-before: page;
+        margin-top: 19cm;
+    }
+
+    .header,
+    .footer,
+    .langues {
+        display: none;
+    }
+
+    
+}
