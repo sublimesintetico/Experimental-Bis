@@ -55,27 +55,27 @@ function centralOrnament(i, row, col, size) {
 }
 
 function cero() {
-	flecha = document.getElementById('flecha-0')
-	flecha1 = document.getElementById('flecha-1')
-	flecha.style.display = "inherit"
-	flecha1.style.display = "none"
+	textocero = document.getElementById('texto-0')
+	textouno = document.getElementById('texto-1')
+	textocero.style.textDecoration = "underline"
+	textouno.style.textDecoration = "none"
 	ornaments = 0 ;
 	console.log('Ornament =', ornaments);
 }
 
 function uno() {
-	flecha = document.getElementById('flecha-1')
-	flecha0 = document.getElementById('flecha-0')
-	flecha.style.display = "inherit"
-	flecha0.style.display = "none"
+	textocero = document.getElementById('texto-0')
+	textouno = document.getElementById('texto-1')
+	textocero.style.textDecoration = "none"
+	textouno.style.textDecoration = "underline"
 	ornaments = 1 ;
 	console.log('Ornament =', ornaments);
 }
 
 function random() {
 	ornaments = Math.floor(Math.random() * maxOrnaments)
-	flecha = document.getElementById('flecha-' + ornaments)
-	flecha.style.display = "inherit"
+	texto = document.getElementById('texto-' + ornaments)
+	texto.style.textDecoration = "underline"
 	console.log('Ornament =', ornaments);
 }
 
