@@ -190,7 +190,7 @@ async function orar() {
 
 		const canvas = await html2canvas(grilla, {
 			backgroundColor: "#ffffff",
-			scale: 1,
+			scale: 6,
 			useCORS: true,
 			allowTaint: true,
 			scrollX: -window.scrollX,

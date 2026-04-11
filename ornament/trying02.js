@@ -5,15 +5,15 @@ window.addEventListener("load", () => {
 })
 
 function gridDefine() {
-    const root = document.getElementById('grid');
-    const width = window.innerWidth;
-    const height = window.innerHeight / 2.2;
+    const root = document.getElementById('grid2');
+    const width = window.innerWidth / 4;
+    const height = window.innerHeight ;
 
-    columnSize = Math.floor(width / 24) -0.5;
-    row = Math.floor(height / 25) -0.5;
+    columnSize = Math.floor(width / 8) -2;
+    row = Math.floor(height / 8) -2;
 
-    root.style.gridTemplateColumns = `repeat(24, ${columnSize}px)`;
-    root.style.gridTemplateRows = `repeat(25, ${row}px)`;
+    root.style.gridTemplateColumns = `repeat(8, ${columnSize}px)`;
+    root.style.gridTemplateRows = `repeat(8, ${row}px)`;
         console.log(`Grid defined: ${columnSize}px columns, ${row}px rows`);
 }
 
@@ -26,10 +26,6 @@ let rotY = 0
 let display = 0
 let displayDatita = 0
 let maxOrnaments = 2
-
-rS = Math.max(1, rS); rE = Math.min(25, rE);
-cS = Math.max(1, cS); cE = Math.min(25, cE);
-
 
 function centralOrnament(i, row, col, size) {
 	// Recortar size si se sale del borde inferior/derecho
@@ -177,4 +173,68 @@ function escribirType() {
 
 		}
 	})
+}
+
+
+async function orar() {
+    const boton = document.getElementById("print-button");
+    const textoInput = document.getElementById("texto-input");
+    const texto = textoInput?.value?.trim() || "(sin texto)";
+	const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
+
+    boton.textContent = "Orando...";
+    boton.disabled = true;
+
+    try {
+		const grilla = document.getElementById("grid");
+
+		const canvas = await html2canvas(grilla, {
+			backgroundColor: "#ffffff",
+			scale: 6,
+			useCORS: true,
+			allowTaint: true,
+			scrollX: -window.scrollX,
+			scrollY: -window.scrollY,
+			ignoreElements: (el) =>
+				el.classList.contains("print-button") || el.classList.contains("form"),
+		});
+
+		const imagenBase64 = canvas.toDataURL("image/jpeg", 0.6); // jpeg + compresión
+
+		const imgs = grilla.querySelectorAll("img");
+		const conteo = {};
+		imgs.forEach((img) => {
+			const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
+			if (match) {
+				const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre";
+				const letra = match[2].toUpperCase();
+				const key = `${tipo} - ${letra}`;
+				conteo[key] = (conteo[key] || 0) + 1;
+			}
+		});
+
+		const descripcion = Object.entries(conteo)
+			.map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
+			.join("\n") || "Grilla vacía";
+
+		const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
+		});
+
+		if (!res.ok) throw new Error(`API error: ${res.status}`);
+
+		boton.textContent = "Oración enviada";
+		setTimeout(() => {
+			boton.textContent = "Orar";
+			boton.disabled = false;
+		}, 3000);
+
+	} catch (err) {
+		console.error("Error al orar:", err);
+		boton.textContent = "Error — intentá de nuevo";
+		boton.disabled = false;
+		setTimeout(() => (boton.textContent = "Orar"), 3000);
+	}
 }
