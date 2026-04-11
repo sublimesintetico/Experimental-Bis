@@ -197,7 +197,7 @@ const views = {
 
         <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a a href="./ornament/trying0.html" target="blank">/ Encrypted Prayers</a></p>
 
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a a href="./ornament/trying0.html" target="blank">/ Encrypted Prayers</a></p>
+        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a a href="./2essai (anim)/trying.html" target="blank">/ Colectivo</a></p>
         
         <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;">/ More coming Soon!</p>
 
