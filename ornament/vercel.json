@@ -1,0 +1,7 @@
+{
+    "functions": {
+        "api/orar.js": {
+            "maxDuration": 15
+        }
+    }
+}
