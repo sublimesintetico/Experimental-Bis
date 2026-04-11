@@ -5,15 +5,15 @@ window.addEventListener("load", () => {
 })
 
 function gridDefine() {
-    const root = document.getElementById('grid2');
-    const width = window.innerWidth / 4;
-    const height = window.innerHeight ;
+    const root = document.getElementById('grid');
+    const width = window.innerWidth;
+    const height = window.innerHeight / 2;
 
-    columnSize = Math.floor(width / 8) -2;
-    row = Math.floor(height / 8) -2;
+    columnSize = Math.floor(width / 25) -2;
+    row = Math.floor(height / 25) -2;
 
-    root.style.gridTemplateColumns = `repeat(8, ${columnSize}px)`;
-    root.style.gridTemplateRows = `repeat(8, ${row}px)`;
+    root.style.gridTemplateColumns = `repeat(25, ${columnSize}px)`;
+    root.style.gridTemplateRows = `repeat(25, ${row}px)`;
         console.log(`Grid defined: ${columnSize}px columns, ${row}px rows`);
 }
 
