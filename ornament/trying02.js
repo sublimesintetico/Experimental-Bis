@@ -9,10 +9,10 @@ function gridDefine() {
     const width = window.innerWidth;
     const height = window.innerHeight / 2;
 
-    columnSize = Math.floor(width / 25) -2;
+    columnSize = Math.floor(width / 24) -2;
     row = Math.floor(height / 25) -2;
 
-    root.style.gridTemplateColumns = `repeat(25, ${columnSize}px)`;
+    root.style.gridTemplateColumns = `repeat(24, ${columnSize}px)`;
     root.style.gridTemplateRows = `repeat(25, ${row}px)`;
         console.log(`Grid defined: ${columnSize}px columns, ${row}px rows`);
 }
