@@ -2,6 +2,8 @@ export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
     const { texto, descripcion, imagen, fecha } = req.body;
+    
+    console.log("Body recibido:", { texto, descripcion, fecha, imagenLength: imagen?.length });
 
     const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -10,7 +12,7 @@ export default async function handler(req, res) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            from: "onboarding@resend.dev",      // dominio verificado en Resend
+            from: "onboarding@resend.dev",
             to: "sinteticosublime@gmail.com",
             subject: `Oración — ${fecha}`,
             html: `
@@ -23,6 +25,9 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log("Respuesta Resend:", data);
+    
     if (!response.ok) return res.status(500).json(data);
     return res.status(200).json({ ok: true });
 }
+
