@@ -237,11 +237,3 @@ async function orar() {
 		setTimeout(() => (boton.textContent = "Orar"), 3000);
 	}
 }
-
-const res = await fetch("/api/orar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
-});
-
-if (!res.ok) throw new Error(`API error: ${res.status}`);
