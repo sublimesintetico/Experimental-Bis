@@ -1136,44 +1136,15 @@ const views = {
   `,
 
   projects: `
-    <div class="project-container" style="background:none; border-color: none;">
+        <div class="project-container" style="background:none; border-color: none;">
 
         <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 0em;">(2026)</p>
 
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj12" onclick="route()">/ Mémoire</a></p>
+        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a a href="./ornament/trying0.html" target="blank">/ Encrypted Prayers</a></p>
 
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj0" onclick="route()">/ Los poseídos entre lilas</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj1" onclick="route()">/ Ugly Girls & Boys</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj1" onclick="route()">/ I</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj2" onclick="route()">/ II</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; cursor:pointer;"><a href="#/proj3" onclick="route()">/ III</a></p>
-
-
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 0em;">(2025)</p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj4" onclick="route()">/ The Orphan Book</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj5" onclick="route()">/ May the Queen</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj5" onclick="route()">/ Forget her somehow</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj6" onclick="route()">/ Affiches</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj7" onclick="route()">/ Aeterna Absentia</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj8" onclick="route()">/ Ipomea Festival</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj9" onclick="route()">/ Pink Dream</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 6em; margin-bottom: -1.2em; cursor:pointer;"><a href="#/proj10" onclick="route()">/ Cul-de-sac</a></p>
-
-        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;">/ Ave Maria</p>
-
+        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;"><a a href="./w2p/index.html" target="blank">/ Colectivo</a></p>
+        
+        <p style="border-bottom: 0.5em; border-style: solid; border-color: #f6f6f6; margin-left: 3em; margin-bottom: -1.2em; cursor:pointer;">/ More coming Soon!</p>
 
     </div>
   `,

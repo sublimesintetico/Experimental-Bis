@@ -17,6 +17,7 @@ export default async function handler(req, res) {
             to: "sinteticosublime@gmail.com",
             subject: `Oración — ${fecha}`,
             html: `
+                <p><strong>Texto:</strong> ${texto}</p>
                 <p><strong>Grilla:</strong></p>
                 <pre>${descripcion}</pre>
                 <p>La grilla está adjunta como imagen.</p>
