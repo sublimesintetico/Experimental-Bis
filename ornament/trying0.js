@@ -237,7 +237,11 @@ async function orar() {
     boton.disabled = true;
 
     try {
-        const grilla = document.getElementById("grid"); // ← tiene que estar acá dentro
+        const grilla = document.getElementById("grid");
+
+        // Ocultar elementos antes de capturar
+        const ocultarEls = grilla.querySelectorAll(".print-button, .form, input, button");
+        ocultarEls.forEach(el => el.style.visibility = "hidden");
 
         const canvas = await html2canvas(grilla, {
             backgroundColor: "#ffffff",
@@ -248,27 +252,37 @@ async function orar() {
             scrollY: 0,
             width: grilla.scrollWidth,
             height: grilla.scrollHeight,
-			ignoreElements: (el) =>
-				el.classList.contains("print-button") || el.classList.contains("form"),
         });
 
-        const imgData = canvas.toDataURL("image/jpeg", 0.8);
+        // Restaurar visibilidad
+        ocultarEls.forEach(el => el.style.visibility = "");
 
+        const imgData = canvas.toDataURL("image/jpeg", 0.9);
+
+        // Calcular dimensiones reales para no estirar
         const { jsPDF } = window.jspdf;
+
+        const pxToMm = (px) => px * 0.2645833;
+        const imgWidthMm = pxToMm(canvas.width / 6); // dividir por scale
+        const imgHeightMm = pxToMm(canvas.height / 6);
+
+        // Página del tamaño exacto de la grilla — como window.print()
         const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "cm",
-            format: [18, 24],
+            orientation: imgWidthMm > imgHeightMm ? "landscape" : "portrait",
+            unit: "mm",
+            format: [imgWidthMm, imgHeightMm],
         });
-        pdf.addImage(imgData, "JPEG", 0, 0, 18, 24);
+
+        pdf.addImage(imgData, "JPEG", 0, 0, imgWidthMm, imgHeightMm);
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
+        // Conteo de ornamentos
         const imgs = grilla.querySelectorAll("img");
         const conteo = {};
         imgs.forEach((img) => {
             const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
             if (match) {
-                const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre";
+                const tipo = match[1] === "0" ? "Venir Bien" : match[1] === "1" ? "Fúnebre" : "Cintas al Viento";
                 const letra = match[2].toUpperCase();
                 const key = `${tipo} - ${letra}`;
                 conteo[key] = (conteo[key] || 0) + 1;
@@ -282,7 +296,7 @@ async function orar() {
         const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha, tipo: "pdf" }),
+            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha }),
         });
 
         if (!res.ok) throw new Error(`API error: ${res.status}`);
