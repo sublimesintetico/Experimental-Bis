@@ -237,22 +237,29 @@ async function orar() {
     boton.disabled = true;
 
     try {
-		const grilla = document.getElementById("grid");
+		// Instalar: <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+		const { jsPDF } = window.jspdf;
 
 		const canvas = await html2canvas(grilla, {
 			backgroundColor: "#ffffff",
 			scale: 6,
 			useCORS: true,
-			allowTaint: true,
-			scrollX: -window.scrollX,
-			scrollY: -window.scrollY,
-			ignoreElements: (el) =>
-				el.classList.contains("print-button") || el.classList.contains("form"),
+			scrollX: 0,
+			scrollY: 0,
+			width: grilla.scrollWidth,
+			height: grilla.scrollHeight,
 		});
 
-		const imagenBase64 = canvas.toDataURL("image/jpeg", 0.6); // jpeg + compresión
+		const imgData = canvas.toDataURL("image/jpeg", 0.8);
+		const pdf = new jsPDF({
+			orientation: "portrait",
+			unit: "cm",
+			format: [18, 24], // mismo que tu @page en el CSS
+		});
 
-		const imgs = grilla.querySelectorAll("img");
+		pdf.addImage(imgData, "JPEG", 0, 0, 18, 24);
+		const pdfBase64 = pdf.output("datauristring").split(",")[1];
 		const conteo = {};
 		imgs.forEach((img) => {
 			const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);

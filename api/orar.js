@@ -24,7 +24,7 @@ export default async function handler(req, res) {
             `,
             attachments: [
                 {
-                    filename: "grilla.jpg",
+                    filename: "grilla.pdf",
                     content: base64Data,
                 }
             ]

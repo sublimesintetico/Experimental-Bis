@@ -221,7 +221,10 @@ async function orar() {
 		imgs.forEach((img) => {
 			const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
 			if (match) {
-				const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre";
+				const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre"
+				if (match[1] === "2") {
+					tipo = "Cintas al Viento"
+				};
 				const letra = match[2].toUpperCase();
 				const key = `${tipo} - ${letra}`;
 				conteo[key] = (conteo[key] || 0) + 1;
