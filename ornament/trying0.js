@@ -248,6 +248,8 @@ async function orar() {
             scrollY: 0,
             width: grilla.scrollWidth,
             height: grilla.scrollHeight,
+			ignoreElements: (el) =>
+				el.classList.contains("print-button") || el.classList.contains("form"),
         });
 
         const imgData = canvas.toDataURL("image/jpeg", 0.8);
