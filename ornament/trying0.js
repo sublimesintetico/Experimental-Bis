@@ -25,7 +25,7 @@ let rotY = 0
 
 let display = 0
 let displayDatita = 0
-let maxOrnaments = 2
+let maxOrnaments = 3
 
 function centralOrnament(i, row, col, size) {
 	// Recortar size si se sale del borde inferior/derecho
@@ -57,8 +57,10 @@ function centralOrnament(i, row, col, size) {
 function cero() {
 	flecha = document.getElementById('flecha-0')
 	flecha1 = document.getElementById('flecha-1')
+	flecha2 = document.getElementById('flecha-2')
 	flecha.style.display = "inherit"
 	flecha1.style.display = "none"
+	flecha2.style.display = "none"
 	ornaments = 0 ;
 	console.log('Ornament =', ornaments);
 }
@@ -66,9 +68,22 @@ function cero() {
 function uno() {
 	flecha = document.getElementById('flecha-1')
 	flecha0 = document.getElementById('flecha-0')
+	flecha2 = document.getElementById('flecha-2')
 	flecha.style.display = "inherit"
 	flecha0.style.display = "none"
+	flecha2.style.display = "none"
 	ornaments = 1 ;
+	console.log('Ornament =', ornaments);
+}
+
+function dos() {
+	flecha = document.getElementById('flecha-2')
+	flecha0 = document.getElementById('flecha-0')
+	flecha1 = document.getElementById('flecha-1')
+	flecha.style.display = "inherit"
+	flecha0.style.display = "none"
+	flecha1.style.display = "none"
+	ornaments = 2 ;
 	console.log('Ornament =', ornaments);
 }
 
