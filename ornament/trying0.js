@@ -231,68 +231,70 @@ async function orar() {
     const boton = document.getElementById("print-button");
     const textoInput = document.getElementById("texto-input");
     const texto = textoInput?.value?.trim() || "(sin texto)";
-	const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
+    const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
 
     boton.textContent = "Orando...";
     boton.disabled = true;
 
     try {
-		// Instalar: <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        const grilla = document.getElementById("grid"); // ← tiene que estar acá dentro
 
-		const { jsPDF } = window.jspdf;
+        const canvas = await html2canvas(grilla, {
+            backgroundColor: "#ffffff",
+            scale: 6,
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            width: grilla.scrollWidth,
+            height: grilla.scrollHeight,
+        });
 
-		const canvas = await html2canvas(grilla, {
-			backgroundColor: "#ffffff",
-			scale: 6,
-			useCORS: true,
-			scrollX: 0,
-			scrollY: 0,
-			width: grilla.scrollWidth,
-			height: grilla.scrollHeight,
-		});
+        const imgData = canvas.toDataURL("image/jpeg", 0.8);
 
-		const imgData = canvas.toDataURL("image/jpeg", 0.8);
-		const pdf = new jsPDF({
-			orientation: "portrait",
-			unit: "cm",
-			format: [18, 24], // mismo que tu @page en el CSS
-		});
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "cm",
+            format: [18, 24],
+        });
+        pdf.addImage(imgData, "JPEG", 0, 0, 18, 24);
+        const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
-		pdf.addImage(imgData, "JPEG", 0, 0, 18, 24);
-		const pdfBase64 = pdf.output("datauristring").split(",")[1];
-		const conteo = {};
-		imgs.forEach((img) => {
-			const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
-			if (match) {
-				const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre";
-				const letra = match[2].toUpperCase();
-				const key = `${tipo} - ${letra}`;
-				conteo[key] = (conteo[key] || 0) + 1;
-			}
-		});
+        const imgs = grilla.querySelectorAll("img");
+        const conteo = {};
+        imgs.forEach((img) => {
+            const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
+            if (match) {
+                const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre";
+                const letra = match[2].toUpperCase();
+                const key = `${tipo} - ${letra}`;
+                conteo[key] = (conteo[key] || 0) + 1;
+            }
+        });
 
-		const descripcion = Object.entries(conteo)
-			.map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
-			.join("\n") || "Grilla vacía";
+        const descripcion = Object.entries(conteo)
+            .map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
+            .join("\n") || "Grilla vacía";
 
-		const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
-		});
+        const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha, tipo: "pdf" }),
+        });
 
-		if (!res.ok) throw new Error(`API error: ${res.status}`);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
 
-		boton.textContent = "Oración enviada";
-		setTimeout(() => {
-			boton.textContent = "Orar";
-			boton.disabled = false;
-		}, 3000);
+        boton.textContent = "Oración enviada";
+        setTimeout(() => {
+            boton.textContent = "Orar";
+            boton.disabled = false;
+        }, 3000);
 
-	} catch (err) {
-		console.error("Error al orar:", err);
-		boton.textContent = "Error — intentá de nuevo";
-		boton.disabled = false;
-		setTimeout(() => (boton.textContent = "Orar"), 3000);
-	}
+    } catch (err) {
+        console.error("Error al orar:", err);
+        boton.textContent = "Error — intentá de nuevo";
+        boton.disabled = false;
+        setTimeout(() => (boton.textContent = "Orar"), 3000);
+    }
 }
