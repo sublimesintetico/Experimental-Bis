@@ -178,7 +178,8 @@ function escribirType() {
 
 async function orar() {
     const boton = document.getElementById("print-button");
-    const textoInput = document.querySelector('#texto-input').value;
+    const textoInput = document.getElementById("texto-input");
+	const texto2 = textoInput.value;
     const texto = textoInput?.value?.trim() || "(sin texto)";
 	const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
 

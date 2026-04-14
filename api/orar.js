@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
-    const { textoInput, texto, descripcion, imagen, fecha } = req.body;
+    const { textoInput, texto2, texto, descripcion, imagen, fecha } = req.body;
 
     // Separar el header del base64 puro
     const base64Data = imagen.replace(/^data:image\/\w+;base64,/, "");
@@ -18,6 +18,7 @@ export default async function handler(req, res) {
             subject: `Oración — ${fecha}`,
             html: `
                 <p><strong>Texto:</strong> ${texto}</p>
+                <p><strong>Texto2:</strong> ${texto2}</p>
                 <p><strong>Texto Input:</strong> ${textoInput}</p>
                 <p><strong>Grilla:</strong></p>
                 <pre>${descripcion}</pre>
