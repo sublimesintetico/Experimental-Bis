@@ -195,64 +195,86 @@ async function orar() {
     const boton = document.getElementById("print-button");
     const textoInput = document.getElementById("texto-input");
     const texto = textoInput?.value?.trim() || "(sin texto)";
-	const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
+    const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
 
     boton.textContent = "Orando...";
     boton.disabled = true;
 
     try {
-		const grilla = document.getElementById("grid");
+        const grilla = document.getElementById("grid");
 
-		const canvas = await html2canvas(grilla, {
-			backgroundColor: "#ffffff",
-			scale: 6,
-			useCORS: true,
-			allowTaint: true,
-			scrollX: -window.scrollX,
-			scrollY: -window.scrollY,
-			ignoreElements: (el) =>
-				el.classList.contains("print-button") || el.classList.contains("form"),
-		});
+        // Ocultar elementos antes de capturar
+        const ocultarEls = grilla.querySelectorAll(".print-button, .form, input, button");
+        ocultarEls.forEach(el => el.style.visibility = "hidden");
 
-		const imagenBase64 = canvas.toDataURL("image/jpeg", 0.6); // jpeg + compresión
+        const canvas = await html2canvas(grilla, {
+            backgroundColor: "#ffffff",
+            scale: 6,
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            width: grilla.scrollWidth,
+            height: grilla.scrollHeight,
+        });
 
-		const imgs = grilla.querySelectorAll("img");
-		const conteo = {};
-		imgs.forEach((img) => {
-			const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
-			if (match) {
-				const tipo = match[1] === "0" ? "Venir Bien" : "Fúnebre"
-				if (match[1] === "2") {
-					tipo = "Cintas al Viento"
-				};
-				const letra = match[2].toUpperCase();
-				const key = `${tipo} - ${letra}`;
-				conteo[key] = (conteo[key] || 0) + 1;
-			}
-		});
+        // Restaurar visibilidad
+        ocultarEls.forEach(el => el.style.visibility = "");
 
-		const descripcion = Object.entries(conteo)
-			.map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
-			.join("\n") || "Grilla vacía";
+        const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
-		const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ texto, descripcion, imagen: imagenBase64, fecha }),
-		});
+        // Calcular dimensiones reales para no estirar
+        const { jsPDF } = window.jspdf;
 
-		if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const pxToMm = (px) => px * 0.2645833;
+        const imgWidthMm = pxToMm(canvas.width / 6); // dividir por scale
+        const imgHeightMm = pxToMm(canvas.height / 6);
 
-		boton.textContent = "Oración enviada";
-		setTimeout(() => {
-			boton.textContent = "Orar";
-			boton.disabled = false;
-		}, 3000);
+        // Página del tamaño exacto de la grilla — como window.print()
+        const pdf = new jsPDF({
+            orientation: imgWidthMm > imgHeightMm ? "landscape" : "portrait",
+            unit: "mm",
+            format: [imgWidthMm, imgHeightMm],
+        });
 
-	} catch (err) {
-		console.error("Error al orar:", err);
-		boton.textContent = "Error — intentá de nuevo";
-		boton.disabled = false;
-		setTimeout(() => (boton.textContent = "Orar"), 3000);
-	}
+        pdf.addImage(imgData, "JPEG", 0, 0, imgWidthMm, imgHeightMm);
+        const pdfBase64 = pdf.output("datauristring").split(",")[1];
+
+        // Conteo de ornamentos
+        const imgs = grilla.querySelectorAll("img");
+        const conteo = {};
+        imgs.forEach((img) => {
+            const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
+            if (match) {
+                const tipo = match[1] === "0" ? "Venir Bien" : match[1] === "1" ? "Fúnebre" : "Cintas al Viento";
+                const letra = match[2].toUpperCase();
+                const key = `${tipo} - ${letra}`;
+                conteo[key] = (conteo[key] || 0) + 1;
+            }
+        });
+
+        const descripcion = Object.entries(conteo)
+            .map(([k, v]) => `${k}: ${v} fragmento${v > 1 ? "s" : ""}`)
+            .join("\n") || "Grilla vacía";
+
+        const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha }),
+        });
+
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+
+        boton.textContent = "Oración enviada";
+        setTimeout(() => {
+            boton.textContent = "Orar";
+            boton.disabled = false;
+        }, 3000);
+
+    } catch (err) {
+        console.error("Error al orar:", err);
+        boton.textContent = "Error — intentá de nuevo";
+        boton.disabled = false;
+        setTimeout(() => (boton.textContent = "Orar"), 3000);
+    }
 }
