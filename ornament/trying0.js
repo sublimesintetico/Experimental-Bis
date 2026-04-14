@@ -94,6 +94,42 @@ function random() {
 	console.log('Ornament =', ornaments);
 }
 
+function imgcero() {
+	img = document.getElementById('img0')
+	img1 = document.getElementById('img1')
+	img2 = document.getElementById('img2')
+	img.style.display = "block"
+	img1.style.display = "none"
+	img2.style.display = "none"
+}
+
+function imguno() {
+	img = document.getElementById('img0')
+	img1 = document.getElementById('img1')
+	img2 = document.getElementById('img2')
+	img.style.display = "none"
+	img1.style.display = "block"
+	img2.style.display = "none"
+}
+
+function imgdos() {
+	img = document.getElementById('img0')
+	img1 = document.getElementById('img1')
+	img2 = document.getElementById('img2')
+	img.style.display = "none"
+	img1.style.display = "none"
+	img2.style.display = "block"
+}
+
+function noshow() {
+	img = document.getElementById('img0')
+	img1 = document.getElementById('img1')
+	img2 = document.getElementById('img2')
+	img.style.display = "none"
+	img1.style.display = "none"
+	img2.style.display = "none"
+}
+
 function mostrarInfo() {
 	info = document.getElementById('info')
 	
