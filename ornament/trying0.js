@@ -262,7 +262,7 @@ async function orar() {
         // Hoja fija — mismas dimensiones que tu @page en CSS
         const pageW = 180; // mm (18cm)
         const pageH = 240; // mm (24cm)
-        const margin = 10; // mm de margen en cada lado
+        const margin = 5; // mm de margen en cada lado
 
         const maxW = pageW - margin * 2;
         const maxH = pageH - margin * 2;
