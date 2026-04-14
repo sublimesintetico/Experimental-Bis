@@ -286,7 +286,7 @@ body {
     }
 }
 
-@media(max-width: 90em){
+@media(min-width: 1000px){
     /*Links Style*/
     a {
         outline: none;

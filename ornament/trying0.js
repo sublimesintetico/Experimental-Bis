@@ -24,7 +24,7 @@ let rotX = 0
 let rotY = 0
 
 let display = 0
-let displayDatita = 0
+let displayDatita = 1
 let maxOrnaments = 3
 
 function centralOrnament(i, row, col, size) {
