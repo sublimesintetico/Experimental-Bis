@@ -25,7 +25,7 @@ let rotY = 0
 
 let display = 0
 let displayDatita = 0
-let maxOrnaments = 2
+let maxOrnaments = 3
 
 function centralOrnament(i, row, col, size) {
 	// Recortar size si se sale del borde inferior/derecho
@@ -57,8 +57,10 @@ function centralOrnament(i, row, col, size) {
 function cero() {
 	textocero = document.getElementById('texto-0')
 	textouno = document.getElementById('texto-1')
+	textodos = document.getElementById('texto-2')
 	textocero.style.textDecoration = "underline"
 	textouno.style.textDecoration = "none"
+	textodos.style.textDecoration = "none"
 	ornaments = 0 ;
 	console.log('Ornament =', ornaments);
 }
@@ -66,9 +68,22 @@ function cero() {
 function uno() {
 	textocero = document.getElementById('texto-0')
 	textouno = document.getElementById('texto-1')
+	textodos = document.getElementById('texto-2')
 	textocero.style.textDecoration = "none"
 	textouno.style.textDecoration = "underline"
+	textodos.style.textDecoration = "none"
 	ornaments = 1 ;
+	console.log('Ornament =', ornaments);
+}
+
+function dos() {
+	textocero = document.getElementById('texto-0')
+	textouno = document.getElementById('texto-1')
+	textodos = document.getElementById('texto-2')
+	textocero.style.textDecoration = "none"
+	textouno.style.textDecoration = "none"
+	textodos.style.textDecoration = "underline"
+	ornaments = 2 ;
 	console.log('Ornament =', ornaments);
 }
 
