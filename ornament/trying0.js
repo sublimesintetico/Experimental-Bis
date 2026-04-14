@@ -239,7 +239,6 @@ async function orar() {
     try {
         const grilla = document.getElementById("grid");
 
-        // Ocultar elementos antes de capturar
         const ocultarEls = grilla.querySelectorAll(".print-button, .form, input, button");
         ocultarEls.forEach(el => el.style.visibility = "hidden");
 
@@ -254,26 +253,41 @@ async function orar() {
             height: grilla.scrollHeight,
         });
 
-        // Restaurar visibilidad
         ocultarEls.forEach(el => el.style.visibility = "");
 
         const imgData = canvas.toDataURL("image/jpeg", 0.9);
 
-        // Calcular dimensiones reales para no estirar
         const { jsPDF } = window.jspdf;
 
-        const pxToMm = (px) => px * 0.2645833;
-        const imgWidthMm = pxToMm(canvas.width / 6); // dividir por scale
-        const imgHeightMm = pxToMm(canvas.height / 6);
+        // Hoja fija — mismas dimensiones que tu @page en CSS
+        const pageW = 180; // mm (18cm)
+        const pageH = 240; // mm (24cm)
+        const margin = 10; // mm de margen en cada lado
 
-        // Página del tamaño exacto de la grilla — como window.print()
+        const maxW = pageW - margin * 2;
+        const maxH = pageH - margin * 2;
+
+        // Dimensiones reales de la imagen capturada
+        const pxToMm = (px) => px * 0.2645833;
+        const imgW = pxToMm(canvas.width / 6);
+        const imgH = pxToMm(canvas.height / 6);
+
+        // Escalar proporcionalmente para que entre en el área útil (object-fit: contain)
+        const ratio = Math.min(maxW / imgW, maxH / imgH);
+        const finalW = imgW * ratio;
+        const finalH = imgH * ratio;
+
+        // Centrar en la página
+        const offsetX = (pageW - finalW) / 2;
+        const offsetY = (pageH - finalH) / 2;
+
         const pdf = new jsPDF({
-            orientation: imgWidthMm > imgHeightMm ? "landscape" : "portrait",
+            orientation: "portrait",
             unit: "mm",
-            format: [imgWidthMm, imgHeightMm],
+            format: [pageW, pageH],
         });
 
-        pdf.addImage(imgData, "JPEG", 0, 0, imgWidthMm, imgHeightMm);
+        pdf.addImage(imgData, "JPEG", offsetX, offsetY, finalW, finalH);
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
         // Conteo de ornamentos
