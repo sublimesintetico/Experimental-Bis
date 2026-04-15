@@ -238,46 +238,82 @@ async function orar() {
 
     try {
         const grilla = document.getElementById("grid");
-
-        // Ocultar elementos antes de capturar
-        const ocultarEls = grilla.querySelectorAll(".print-button, .form, input, button");
-        ocultarEls.forEach(el => el.style.visibility = "hidden");
-
-        const canvas = await html2canvas(grilla, {
-            backgroundColor: "#ffffff",
-            scale: 6,
-            useCORS: true,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            width: grilla.scrollWidth,
-            height: grilla.scrollHeight,
-        });
-
-        // Restaurar visibilidad
-        ocultarEls.forEach(el => el.style.visibility = "");
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.9);
-
-        // Calcular dimensiones reales para no estirar
         const { jsPDF } = window.jspdf;
 
-        const pxToMm = (px) => px * 0.2645833;
-        const imgWidthMm = pxToMm(canvas.width / 6); // dividir por scale
-        const imgHeightMm = pxToMm(canvas.height / 6);
+        const pageW = 180;
+        const pageH = 240;
+        const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [pageW, pageH] });
 
-        // Página del tamaño exacto de la grilla — como window.print()
-        const pdf = new jsPDF({
-            orientation: imgWidthMm > imgHeightMm ? "landscape" : "portrait",
-            unit: "mm",
-            format: [imgWidthMm, imgHeightMm],
-        });
+        const cols = 24;
+        const rows = 25;
+        const cellW = pageW / cols;
+        const cellH = pageH / rows;
 
-        pdf.addImage(imgData, "JPEG", 0, 0, imgWidthMm, imgHeightMm);
+        const imgs = grilla.querySelectorAll("img");
+
+        await Promise.all([...imgs].map(img =>
+            img.complete ? Promise.resolve() :
+            new Promise(r => { img.onload = r; img.onerror = r; })
+        ));
+
+        // Cache para no fetchear la misma src dos veces
+        const srcCache = {};
+
+        for (const img of imgs) {
+            const styleStr = img.getAttribute("style") || "";
+            const gaMatch = styleStr.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
+            if (!gaMatch) continue;
+
+            const rS = parseInt(gaMatch[1]) - 1;
+            const cS = parseInt(gaMatch[2]) - 1;
+            const rE = parseInt(gaMatch[3]) - 1;
+            const cE = parseInt(gaMatch[4]) - 1;
+
+            const x = cS * cellW;
+            const y = rS * cellH;
+            const w = (cE - cS) * cellW;
+            const h = (rE - rS) * cellH;
+
+            const flipX = styleStr.includes("scaleX(-1)") || styleStr.includes("scale(-1, -1)");
+            const flipY = styleStr.includes("scaleY(-1)") || styleStr.includes("scale(-1, -1)");
+
+            // Reusar base64 si ya se fetcheó esta src
+            if (!srcCache[img.src]) {
+                srcCache[img.src] = await fetchImageAsBase64(img.src);
+            }
+            const imgData = srcCache[img.src];
+
+            // Canvas pequeño: 100px es suficiente para el tamaño real en el PDF
+            const size = 100;
+            const tempCanvas = document.createElement("canvas");
+            tempCanvas.width = size;
+            tempCanvas.height = size;
+            const ctx = tempCanvas.getContext("2d");
+
+            ctx.save();
+            ctx.translate(flipX ? size : 0, flipY ? size : 0);
+            ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+
+            const tempImg = new Image();
+            await new Promise(r => { tempImg.onload = r; tempImg.src = imgData; });
+            ctx.drawImage(tempImg, 0, 0, size, size);
+            ctx.restore();
+
+            // JPEG con compresión en lugar de PNG
+            const flippedData = tempCanvas.toDataURL("image/jpeg", 0.75);
+            pdf.addImage(flippedData, "JPEG", x, y, w, h);
+        }
+
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
+        // Verificación de tamaño antes de enviar
+        const sizeKB = Math.round((pdfBase64.length * 3) / 4 / 1024);
+        console.log(`Tamaño del PDF: ${sizeKB} KB`);
+        if (sizeKB > 3500) {
+            throw new Error(`PDF demasiado grande: ${sizeKB} KB. Intentá con menos letras.`);
+        }
+
         // Conteo de ornamentos
-        const imgs = grilla.querySelectorAll("img");
         const conteo = {};
         imgs.forEach((img) => {
             const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
@@ -309,8 +345,21 @@ async function orar() {
 
     } catch (err) {
         console.error("Error al orar:", err);
-        boton.textContent = "Error — intentá de nuevo";
+        boton.textContent = err.message.includes("grande") 
+            ? "Oración muy larga — borrá algunas letras" 
+            : "Error — intentá de nuevo";
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Orar"), 3000);
     }
+}
+
+async function fetchImageAsBase64(src) {
+    const response = await fetch(src);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
