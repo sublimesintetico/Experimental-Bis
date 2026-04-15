@@ -208,24 +208,22 @@ async function orar() {
         const pageH = 240;
         const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [pageW, pageH] });
 
-        // Calcular tamaño de cada celda en mm
         const cols = 24;
         const rows = 25;
         const cellW = pageW / cols;
         const cellH = pageH / rows;
 
-        // Recolectar todas las imágenes del grid
         const imgs = grilla.querySelectorAll("img");
 
-        // Esperar que todas carguen
         await Promise.all([...imgs].map(img =>
             img.complete ? Promise.resolve() :
             new Promise(r => { img.onload = r; img.onerror = r; })
         ));
 
-        // Convertir cada imagen a base64 y dibujarla en su posición del PDF
+        // Cache para no fetchear la misma src dos veces
+        const srcCache = {};
+
         for (const img of imgs) {
-            // Leer posición desde grid-area en el style
             const styleStr = img.getAttribute("style") || "";
             const gaMatch = styleStr.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
             if (!gaMatch) continue;
@@ -240,16 +238,18 @@ async function orar() {
             const w = (cE - cS) * cellW;
             const h = (rE - rS) * cellH;
 
-            // Obtener transform del ornamento
             const flipX = styleStr.includes("scaleX(-1)") || styleStr.includes("scale(-1, -1)");
             const flipY = styleStr.includes("scaleY(-1)") || styleStr.includes("scale(-1, -1)");
 
-            // Cargar imagen como base64
-            const imgData = await fetchImageAsBase64(img.src);
+            // Reusar base64 si ya se fetcheó esta src
+            if (!srcCache[img.src]) {
+                srcCache[img.src] = await fetchImageAsBase64(img.src);
+            }
+            const imgData = srcCache[img.src];
 
-            // Dibujar con flip si corresponde usando canvas temporal
+            // Canvas pequeño: 100px es suficiente para el tamaño real en el PDF
+            const size = 100;
             const tempCanvas = document.createElement("canvas");
-            const size = 300;
             tempCanvas.width = size;
             tempCanvas.height = size;
             const ctx = tempCanvas.getContext("2d");
@@ -257,19 +257,25 @@ async function orar() {
             ctx.save();
             ctx.translate(flipX ? size : 0, flipY ? size : 0);
             ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+
             const tempImg = new Image();
-            await new Promise(r => {
-                tempImg.onload = r;
-                tempImg.src = imgData;
-            });
+            await new Promise(r => { tempImg.onload = r; tempImg.src = imgData; });
             ctx.drawImage(tempImg, 0, 0, size, size);
             ctx.restore();
 
-            const flippedData = tempCanvas.toDataURL("image/png");
-            pdf.addImage(flippedData, "PNG", x, y, w, h);
+            // JPEG con compresión en lugar de PNG
+            const flippedData = tempCanvas.toDataURL("image/jpeg", 0.75);
+            pdf.addImage(flippedData, "JPEG", x, y, w, h);
         }
 
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
+
+        // Verificación de tamaño antes de enviar
+        const sizeKB = Math.round((pdfBase64.length * 3) / 4 / 1024);
+        console.log(`Tamaño del PDF: ${sizeKB} KB`);
+        if (sizeKB > 3500) {
+            throw new Error(`PDF demasiado grande: ${sizeKB} KB. Intentá con menos letras.`);
+        }
 
         // Conteo de ornamentos
         const conteo = {};
@@ -303,13 +309,14 @@ async function orar() {
 
     } catch (err) {
         console.error("Error al orar:", err);
-        boton.textContent = "Error — intentá de nuevo";
+        boton.textContent = err.message.includes("grande") 
+            ? "Oración muy larga — borrá algunas letras" 
+            : "Error — intentá de nuevo";
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Orar"), 3000);
     }
 }
 
-// Helper: fetch imagen y devolver base64
 async function fetchImageAsBase64(src) {
     const response = await fetch(src);
     const blob = await response.blob();
