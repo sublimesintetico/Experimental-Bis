@@ -290,8 +290,14 @@ async function orar() {
         pdf.addImage(imgData, "JPEG", offsetX, offsetY, finalW, finalH);
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
+        // Verificación de tamaño antes de enviar
+        const sizeKB = Math.round((pdfBase64.length * 3) / 4 / 1024);
+        console.log(`Tamaño del PDF: ${sizeKB} KB`);
+        if (sizeKB > 3500) {
+            throw new Error(`PDF demasiado grande: ${sizeKB} KB. Intentá con menos letras.`);
+        }
+
         // Conteo de ornamentos
-        const imgs = grilla.querySelectorAll("img");
         const conteo = {};
         imgs.forEach((img) => {
             const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
@@ -323,8 +329,21 @@ async function orar() {
 
     } catch (err) {
         console.error("Error al orar:", err);
-        boton.textContent = "Error — intentá de nuevo";
+        boton.textContent = err.message.includes("grande") 
+            ? "Oración muy larga — borrá algunas letras" 
+            : "Error — intentá de nuevo";
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Orar"), 3000);
     }
+}
+
+async function fetchImageAsBase64(src) {
+    const response = await fetch(src);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
