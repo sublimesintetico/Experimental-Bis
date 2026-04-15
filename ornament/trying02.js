@@ -202,60 +202,76 @@ async function orar() {
 
     try {
         const grilla = document.getElementById("grid");
-
-        const ocultarEls = grilla.querySelectorAll(".print-button, .form, input, button");
-        ocultarEls.forEach(el => el.style.visibility = "hidden");
-
-        const canvas = await html2canvas(grilla, {
-            backgroundColor: "#ffffff",
-            scale: 6,
-            useCORS: true,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            width: grilla.scrollWidth,
-            height: grilla.scrollHeight,
-        });
-
-        ocultarEls.forEach(el => el.style.visibility = "");
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.9);
-
         const { jsPDF } = window.jspdf;
 
-        // Hoja fija — mismas dimensiones que tu @page en CSS
-        const pageW = 180; // mm (18cm)
-        const pageH = 240; // mm (24cm)
-        const margin = 5; // mm de margen en cada lado
+        const pageW = 180;
+        const pageH = 240;
+        const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: [pageW, pageH] });
 
-        const maxW = pageW - margin * 2;
-        const maxH = pageH - margin * 2;
+        // Calcular tamaño de cada celda en mm
+        const cols = 24;
+        const rows = 25;
+        const cellW = pageW / cols;
+        const cellH = pageH / rows;
 
-        // Dimensiones reales de la imagen capturada
-        const pxToMm = (px) => px * 0.2645833;
-        const imgW = pxToMm(canvas.width / 6);
-        const imgH = pxToMm(canvas.height / 6);
+        // Recolectar todas las imágenes del grid
+        const imgs = grilla.querySelectorAll("img");
 
-        // Escalar proporcionalmente para que entre en el área útil (object-fit: contain)
-        const ratio = Math.min(maxW / imgW, maxH / imgH);
-        const finalW = imgW * ratio;
-        const finalH = imgH * ratio;
+        // Esperar que todas carguen
+        await Promise.all([...imgs].map(img =>
+            img.complete ? Promise.resolve() :
+            new Promise(r => { img.onload = r; img.onerror = r; })
+        ));
 
-        // Centrar en la página
-        const offsetX = (pageW - finalW) / 2;
-        const offsetY = (pageH - finalH) / 2;
+        // Convertir cada imagen a base64 y dibujarla en su posición del PDF
+        for (const img of imgs) {
+            // Leer posición desde grid-area en el style
+            const styleStr = img.getAttribute("style") || "";
+            const gaMatch = styleStr.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/);
+            if (!gaMatch) continue;
 
-        const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: [pageW, pageH],
-        });
+            const rS = parseInt(gaMatch[1]) - 1;
+            const cS = parseInt(gaMatch[2]) - 1;
+            const rE = parseInt(gaMatch[3]) - 1;
+            const cE = parseInt(gaMatch[4]) - 1;
 
-        pdf.addImage(imgData, "JPEG", offsetX, offsetY, finalW, finalH);
+            const x = cS * cellW;
+            const y = rS * cellH;
+            const w = (cE - cS) * cellW;
+            const h = (rE - rS) * cellH;
+
+            // Obtener transform del ornamento
+            const flipX = styleStr.includes("scaleX(-1)") || styleStr.includes("scale(-1, -1)");
+            const flipY = styleStr.includes("scaleY(-1)") || styleStr.includes("scale(-1, -1)");
+
+            // Cargar imagen como base64
+            const imgData = await fetchImageAsBase64(img.src);
+
+            // Dibujar con flip si corresponde usando canvas temporal
+            const tempCanvas = document.createElement("canvas");
+            const size = 300;
+            tempCanvas.width = size;
+            tempCanvas.height = size;
+            const ctx = tempCanvas.getContext("2d");
+
+            ctx.save();
+            ctx.translate(flipX ? size : 0, flipY ? size : 0);
+            ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+            const tempImg = new Image();
+            await new Promise(r => {
+                tempImg.onload = r;
+                tempImg.src = imgData;
+            });
+            ctx.drawImage(tempImg, 0, 0, size, size);
+            ctx.restore();
+
+            const flippedData = tempCanvas.toDataURL("image/png");
+            pdf.addImage(flippedData, "PNG", x, y, w, h);
+        }
+
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
         // Conteo de ornamentos
-        const imgs = grilla.querySelectorAll("img");
         const conteo = {};
         imgs.forEach((img) => {
             const match = img.src.match(/ornaments(\d+)\/[^/]+\/(\w+)\.png/);
@@ -291,4 +307,16 @@ async function orar() {
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Orar"), 3000);
     }
+}
+
+// Helper: fetch imagen y devolver base64
+async function fetchImageAsBase64(src) {
+    const response = await fetch(src);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
