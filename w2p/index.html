@@ -17,10 +17,17 @@
 <div class="container-0">
     <div id="container-root" class="container">
 
-        <!-- <div class="popup" id="popup-0">
-            <img id="popup-0" src="gif/16.png">
-            <button>Click here to be pure</button>
-        </div> -->
+        <div id="popups">
+            <div class="popup" id="popup-0" style="display: none">
+                <div class="top">
+                    <button onclick="closePopUp()"> X </button>
+                </div>
+                <img id="popup-0" src="gif/16.png">
+                <!--<div class="text-box">
+                    <p>Click here to be pure</p>
+                </div>-->
+            </div>
+        </div>
     
         <div style="height:100%; width:100%; display: flex; grid-area: 1 / 1 / 9 / 9;  z-index: 0; align-content: center; justify-content: center;">
             <img id="gif" src="">

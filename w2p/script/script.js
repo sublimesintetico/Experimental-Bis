@@ -1,5 +1,6 @@
 window.addEventListener('load', () => {
     gridDefine();
+    randomPopUp();
 });
 
 /* window.addEventListener('beforeprint', () => {
@@ -18,6 +19,9 @@ called = 0
 resetCalled = 0
 time = 150
 text = ""
+
+let popDone = []
+
 
 const langues = ["esp", "fr", "eng"]
 let currentLangue = 0
@@ -239,6 +243,30 @@ function revealer() {
     }
 }
 
-function popup() {
-    window.open("popup/popup-0.html", "Popup", "width=400,height=400");
+function randomPopUp() {
+    setTimeout(() => {
+        popupNow = Math.floor(Math.random() * 1)
+        for (i = 0; i < popDone.length; i++) {
+            if (popDone[i] === popupNow) {
+                randomPopUp()
+            }
+        } 
+        popDone + popupNow
+        console.log(popDone)
+
+        let popper = document.getElementById('popup-' + popupNow);
+        distancetop = Math.floor(Math.random() * 45)
+        distanceleft = Math.floor(Math.random() * 67)
+            popper.style.display = 'inherit';
+            popper.style.top = distancetop + '%';
+            popper.style.left = distanceleft + '%';
+            console.log(distancetop)
+
+    }, Math.floor(Math.random() * 1))
+}
+
+
+
+function closePopUp() {
+
 }

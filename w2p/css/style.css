@@ -152,9 +152,6 @@ a:hover {
     background-color: white;
     border: solid black 0.3px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     padding: 0 30px 30px;
     z-index: 100;
     align-content: center;
@@ -169,10 +166,38 @@ a:hover {
 
 .popup button {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0 5px;
-    font-size: 16px;
+    top:0%;
+    right: 0%;
+    padding: 0 15px;
+    font-size: 14px;
+    color: rgb(197, 0, 0);
     cursor: pointer;
+    border: none;
+    background-color: rgb(197, 0, 0);
 }
+
+.popup .top {
+    top: 0%;
+    margin-left:-30px;
+    left:0%;
+    width: 460px;
+    height: 15px;
+    border-bottom: solid black 0.3px;
+    background-color: rgba(0, 0, 0, 0.02);
+}   
+
+/* .popup .text-box {
+    position: absolute;
+    display: flex;
+    top: 90%;
+    margin-left:-30px;
+    left:0%;
+    width: 460px;
+    height: 15px;
+    align-content: center;
+    justify-content: center;
+}
+
+.popup p {
+    text-align: center;
+} */
