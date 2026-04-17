@@ -22,7 +22,7 @@ text = ""
 const langues = ["esp", "fr", "eng"]
 let currentLangue = 0
 
-const ornaments = ["infierno", "mas"]
+const ornaments = ["infierno", "mas", "gilda"]
 let currentOrnament = 0
 
 
@@ -130,39 +130,20 @@ function langueReveal() {
 
 function ornamentInfierno() {
     currentOrnament = 0
-
-    title = document.getElementById("title-infierno")
-
-    if (display === 0) {
-        if (called === 0) {
-                resets = resetCalled
-                resetCalled = 0
-            }
-
-            setTimeout(() => {
-                i ++
-                if (i < 16){
-                    if (resets != resetCalled) {
-                        called = 0
-                        return
-                    } else {
-                        img = document.getElementById("gif")
-                        img.src = `gif/infierno/${i}.jpg`
-                        time -= i
-                        called = 1
-                        ornamentInfierno()
-                    }    
-                }
-                }, time);
-                console.log(i)
-    } else {
-        return
-    }
+    ornamental()
 }
 
 function ornamentMas() {
     currentOrnament = 1
+    ornamental()
+}
 
+function ornamentGilda() {
+    currentOrnament = 2
+    ornamental()
+}
+
+function ornamental() {
     title = document.getElementById("title-infierno")
 
     if (display === 0) {
@@ -179,10 +160,10 @@ function ornamentMas() {
                         return
                     } else {
                         img = document.getElementById("gif")
-                        img.src = `gif/mas/${i}.jpg`
+                        img.src = `gif/${ornaments[currentOrnament]}/${i}.jpg`
                         time -= i
                         called = 1
-                        ornamentMas()
+                        ornamental()
                     }    
                 }
                 }, time);
@@ -233,6 +214,11 @@ function revealInfierno() {
     revealer()
 }
 
+function revealGilda() {
+    text = "gilda"
+    revealer()
+}
+
 function revealer() {
     reset()
 
@@ -251,4 +237,8 @@ function revealer() {
         container.style.gridArea = "4 / 4 / 6 / 6";
         display --
     }
+}
+
+function popup() {
+    window.open("popup/popup-0.html", "Popup", "width=400,height=400");
 }

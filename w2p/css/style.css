@@ -145,3 +145,34 @@ a:hover {
 
     
 }
+
+.popup {
+    width: 400px;
+    height: 400px;
+    background-color: white;
+    border: solid black 0.3px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 30px 30px;
+    z-index: 100;
+    align-content: center;
+    justify-content: center;
+}
+
+.popup img {
+    width: 350px;
+    margin-left:25px;
+    height: auto;
+}
+
+.popup button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
