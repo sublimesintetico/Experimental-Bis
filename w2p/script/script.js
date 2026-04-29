@@ -1,6 +1,8 @@
 window.addEventListener('load', () => {
     gridDefine();
-    randomPopUp();
+     setTimeout(() => {
+            randomPopUp()
+        }, Math.floor(Math.random() * 10000))
 });
 
 /* window.addEventListener('beforeprint', () => {
@@ -19,6 +21,8 @@ called = 0
 resetCalled = 0
 time = 150
 text = ""
+let popupSelected = 0
+let maxPopUps = 2 // Numero de popups + 1 (Randomizador)
 
 let popDone = []
 
@@ -140,6 +144,7 @@ function ornamentInfierno() {
 function ornamentMas() {
     currentOrnament = 1
     ornamental()
+
 }
 
 function ornamentGilda() {
@@ -244,29 +249,64 @@ function revealer() {
 }
 
 function randomPopUp() {
-    setTimeout(() => {
-        popupNow = Math.floor(Math.random() * 1)
+        popupNow = Math.floor(Math.random() * maxPopUps)
+
+        if (popDone.length === maxPopUps) {
+            return
+        }
+
         for (i = 0; i < popDone.length; i++) {
             if (popDone[i] === popupNow) {
                 randomPopUp()
             }
         } 
-        popDone + popupNow
+
+        popDone.push(popupNow)
         console.log(popDone)
 
         let popper = document.getElementById('popup-' + popupNow);
-        distancetop = Math.floor(Math.random() * 45)
-        distanceleft = Math.floor(Math.random() * 67)
+
+        if (display === 0) {
+            if (popper.className === "popup") {
+                    distancetop = Math.floor(Math.random() * 45)
+                    distanceleft = Math.floor(Math.random() * 67)
+            } if (popper.className === "popup-long") {
+                    distancetop = Math.floor(Math.random() * 21)
+                    distanceleft = Math.floor(Math.random() * 67)
+            }  
+        } else {
+            if (popper.className === "popup") {
+                    distancetop = Math.floor(Math.random() * 115)
+                    distanceleft = Math.floor(Math.random() * 67)
+            } if (popper.className === "popup-long") {
+                    distancetop = Math.floor(Math.random() * 91) 
+                    distanceleft = Math.floor(Math.random() * 67)
+            }  
+        }
+        
             popper.style.display = 'inherit';
             popper.style.top = distancetop + '%';
             popper.style.left = distanceleft + '%';
             console.log(distancetop)
 
-    }, Math.floor(Math.random() * 1))
+        setTimeout(() => {
+            randomPopUp()
+        }, Math.floor(Math.random() * 10000))
+}
+
+function closePopUp0() {
+    console.log("closePopUp0")
+    popupSelected = 0
+    closePopUp()
+}
+
+function closePopUp1() {
+    popupSelected = 1
+    closePopUp()
 }
 
 
-
 function closePopUp() {
-
+    popper = document.getElementById('popup-' + popupSelected);
+    popper.style.display = 'none';
 }
