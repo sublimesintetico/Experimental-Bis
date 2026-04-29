@@ -22,7 +22,7 @@ resetCalled = 0
 time = 150
 text = ""
 let popupSelected = 0
-let maxPopUps = 2 // Numero de popups + 1 (Randomizador)
+let maxPopUps = 3 // Numero de popups + 1 (Randomizador)
 
 let popDone = []
 
@@ -267,7 +267,7 @@ function randomPopUp() {
         let popper = document.getElementById('popup-' + popupNow);
 
         if (display === 0) {
-            if (popper.className === "popup") {
+            if (popper.className === "popup" || popper.className === "popup-black") {
                     distancetop = Math.floor(Math.random() * 45)
                     distanceleft = Math.floor(Math.random() * 67)
             } if (popper.className === "popup-long") {
@@ -275,7 +275,7 @@ function randomPopUp() {
                     distanceleft = Math.floor(Math.random() * 67)
             }  
         } else {
-            if (popper.className === "popup") {
+            if (popper.className === "popup" || popper.className === "popup-black") {
                     distancetop = Math.floor(Math.random() * 115)
                     distanceleft = Math.floor(Math.random() * 67)
             } if (popper.className === "popup-long") {
@@ -305,6 +305,10 @@ function closePopUp1() {
     closePopUp()
 }
 
+function closePopUp2() {
+    popupSelected = 2
+    closePopUp()
+}
 
 function closePopUp() {
     popper = document.getElementById('popup-' + popupSelected);
