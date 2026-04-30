@@ -22,7 +22,7 @@ resetCalled = 0
 time = 150
 text = ""
 let popupSelected = 0
-let maxPopUps = 3 // Numero de popups + 1 (Randomizador)
+let maxPopUps = 4 // Numero de popups + 1 (Randomizador)
 
 let popDone = []
 
