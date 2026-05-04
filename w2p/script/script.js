@@ -249,25 +249,30 @@ function revealer() {
     }
 }
 
+let popupCount = 0
+const popupInitialDelay = 5000   // delay máximo del primer popup
+const popupMinDelay = 400        // delay mínimo al final
+const popupAccelStep = 600       // cuánto se reduce el máximo por cada popup
+ 
 function randomPopUp() {
         zIndex ++
         popupNow = Math.floor(Math.random() * maxPopUps)
-
+ 
         if (popDone.length === maxPopUps) {
             return
         }
-
+ 
         for (i = 0; i < popDone.length; i++) {
             if (popDone[i] === popupNow) {
                 randomPopUp()
             }
         } 
-
+ 
         popDone.push(popupNow)
         console.log(popDone)
-
+ 
         let popper = document.getElementById('popup-' + popupNow);
-
+ 
         if (display === 0) {
             if (popper.className === "popup" || popper.className === "popup-black") {
                     distancetop = Math.floor(Math.random() * 45)
@@ -297,17 +302,28 @@ function randomPopUp() {
                     distanceleft = 15
             }
         }
+ 
+        // Forzar re-trigger de la animación CSS
+        popper.style.animation = 'none'
+        popper.offsetHeight // reflow
+        popper.style.animation = ''
         
-            popper.style.display = 'inherit';
-            popper.style.top = distancetop + '%';
-            popper.style.left = distanceleft + '%';
-            popper.style.zIndex = zIndex;
-            console.log(distancetop)
-
+        popper.style.display = 'inherit';
+        popper.style.top = distancetop + '%';
+        popper.style.left = distanceleft + '%';
+        popper.style.zIndex = zIndex;
+        console.log(distancetop)
+ 
+        // Calcular el siguiente delay: cada popup reduce el máximo en popupAccelStep
+        popupCount++
+        const maxDelay = Math.max(popupMinDelay, popupInitialDelay - (popupCount * popupAccelStep))
+        const nextDelay = Math.floor(Math.random() * maxDelay) + popupMinDelay
+ 
         setTimeout(() => {
             randomPopUp()
-        }, Math.floor(Math.random() * 5000))
+        }, nextDelay)
 }
+
 
 function closePopUp0() {
     console.log("closePopUp0")
