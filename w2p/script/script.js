@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
     gridDefine();
      setTimeout(() => {
             randomPopUp()
-        }, Math.floor(Math.random() * 10000))
+        }, Math.floor(Math.random() * 5000))
 });
 
 /* window.addEventListener('beforeprint', () => {
@@ -22,7 +22,8 @@ resetCalled = 0
 time = 150
 text = ""
 let popupSelected = 0
-let maxPopUps = 4 // Numero de popups + 1 (Randomizador)
+let maxPopUps = 8 // Numero de popups + 1 (Randomizador)
+let zIndex = 20
 
 let popDone = []
 
@@ -249,6 +250,7 @@ function revealer() {
 }
 
 function randomPopUp() {
+        zIndex ++
         popupNow = Math.floor(Math.random() * maxPopUps)
 
         if (popDone.length === maxPopUps) {
@@ -270,28 +272,41 @@ function randomPopUp() {
             if (popper.className === "popup" || popper.className === "popup-black") {
                     distancetop = Math.floor(Math.random() * 45)
                     distanceleft = Math.floor(Math.random() * 67)
-            } if (popper.className === "popup-long") {
+            } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
                     distancetop = Math.floor(Math.random() * 21)
                     distanceleft = Math.floor(Math.random() * 67)
-            }  
+            }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
+                    distancetop = Math.floor(Math.random() * 45)
+                    distanceleft = Math.floor(Math.random() * 52) 
+            } if (popper.className === "popup-final") {
+                    distancetop = 72
+                    distanceleft = 15
+            }
         } else {
             if (popper.className === "popup" || popper.className === "popup-black") {
                     distancetop = Math.floor(Math.random() * 115)
                     distanceleft = Math.floor(Math.random() * 67)
-            } if (popper.className === "popup-long") {
+            } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
                     distancetop = Math.floor(Math.random() * 91) 
                     distanceleft = Math.floor(Math.random() * 67)
-            }  
+            }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
+                    distancetop = Math.floor(Math.random() * 115)
+                    distanceleft = Math.floor(Math.random() * 52) 
+            } if (popper.className === "popup-final") {
+                    distancetop = 160
+                    distanceleft = 15
+            }
         }
         
             popper.style.display = 'inherit';
             popper.style.top = distancetop + '%';
             popper.style.left = distanceleft + '%';
+            popper.style.zIndex = zIndex;
             console.log(distancetop)
 
         setTimeout(() => {
             randomPopUp()
-        }, Math.floor(Math.random() * 10000))
+        }, Math.floor(Math.random() * 5000))
 }
 
 function closePopUp0() {
@@ -309,6 +324,34 @@ function closePopUp2() {
     popupSelected = 2
     closePopUp()
 }
+
+function closePopUp3() {
+    popupSelected = 3
+    closePopUp()
+}
+
+function closePopUp4() {
+    popupSelected = 4
+    closePopUp()
+}
+
+function closePopUp5() {
+    popupSelected = 5
+    closePopUp()
+}
+
+function closePopUp6() {
+    popupSelected = 6
+    closePopUp()
+}
+
+
+function closePopUp7() {
+    popupSelected = 7
+    closePopUp()
+}
+
+
 
 function closePopUp() {
     popper = document.getElementById('popup-' + popupSelected);

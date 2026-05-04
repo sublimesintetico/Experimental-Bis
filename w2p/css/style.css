@@ -148,11 +148,11 @@ a:hover {
 
 .popup {
     width: 400px;
-    height: 400px;
+    height: 416px;
     background-color: white;
     border: solid black 0.3px;
     position: absolute;
-    padding: 0 30px 30px;
+    padding: 0;
     z-index: 100;
     align-content: center;
     justify-content: center;
@@ -160,7 +160,7 @@ a:hover {
 
 .popup img {
     width: 400px;
-    margin-top: 20px;
+    margin-top: 16px;
     height: auto;
 }
 
@@ -180,7 +180,7 @@ a:hover {
     position: absolute;
     top: 0%;
     left:0%;
-    width: 460px;
+    width: 400px;
     height: 16px;
     border-bottom: solid black 0.3px;
     background-color: rgba(0, 0, 0, 0.02);
@@ -188,11 +188,11 @@ a:hover {
 
 .popup-black {
     width: 400px;
-    height: 400px;
+    height: 416px;
     background-color: black;
     border: solid black 0.3px;
     position: absolute;
-    padding: 0 30px 30px;
+    padding: 0;
     z-index: 100;
     align-content: center;
     justify-content: center;
@@ -200,7 +200,7 @@ a:hover {
 
 .popup-black img {
     width: 400px;
-    margin-top: 20px;
+    margin-top: 16px;
     height: auto;
 }
 
@@ -220,7 +220,7 @@ a:hover {
     position: absolute;
     top: 0%;
     left:0%;
-    width: 460px;
+    width: 400px;
     height: 16px;
     border-bottom: solid black 0.3px;
     background-color: #FAFAFA
@@ -228,11 +228,11 @@ a:hover {
 
 .popup-long {
     width: 400px;
-    height: 600px;
+    height: 616px;
     background-color: white;
     border: solid black 0.3px;
     position: absolute;
-    padding: 0 30px 30px;
+    padding: 0;
     z-index: 100;
     align-content: center;
     justify-content: center;
@@ -240,7 +240,7 @@ a:hover {
 
 .popup-long img {
     width: 400px;
-    margin-top: 20px;
+    margin-top: 16px;
     height: auto;
 }
 
@@ -260,11 +260,133 @@ a:hover {
     position: absolute;
     top: 0%;
     left:0%;
-    width: 460px;
+    width: 400px;
     height: 16px;
     border-bottom: solid black 0.3px;
     background-color: rgba(0, 0, 0, 0.02);
 }   
+
+.popup-long-black {
+    width: 400px;
+    height: 616px;
+    background-color: black;
+    border: solid black 0.3px;
+    position: absolute;
+    padding: 0;
+    z-index: 100;
+    align-content: center;
+    justify-content: center;
+}
+
+.popup-long-black img {
+    width: 400px;
+    margin-top: 16px;
+    height: auto;
+}
+
+.popup-long-black button {
+    position: absolute;
+    top:0%;
+    right: 0%;
+    padding: 0 15px;
+    font-size: 14px;
+    color: rgb(197, 0, 0);
+    cursor: pointer;
+    border: none;
+    background-color: rgb(197, 0, 0);
+}
+
+.popup-long-black .top {
+    position: absolute;
+    top: 0%;
+    left:0%;
+    width: 400px;
+    height: 16px;
+    border-bottom: solid black 0.3px;
+    background-color: #FAFAFA;
+}   
+
+.popup-wide {
+    width: 600px;
+    height: 416px;
+    background-color: white;
+    border: solid black 0.3px;
+    position: absolute;
+    padding: 0;
+    z-index: 100;
+    align-content: center;
+    justify-content: center;
+}
+
+.popup-wide img {
+    width: 600px;
+    margin-top: 16px;
+    height: auto;
+}
+
+.popup-wide button {
+    position: absolute;
+    top:0%;
+    right: 0%;
+    padding: 0 15px;
+    font-size: 14px;
+    color: rgb(197, 0, 0);
+    cursor: pointer;
+    border: none;
+    background-color: rgb(197, 0, 0);
+}
+
+.popup-wide .top {
+    position: absolute;
+    top: 0%;
+    left:0%;
+    width: 600px;
+    height: 16px;
+    border-bottom: solid black 0.3px;
+    background-color: rgba(0, 0, 0, 0.02);
+}   
+
+.popup-final {
+    width: 1000px;
+    height: 216px;
+    background-color: white;
+    border: solid black 0.3px;
+    position: absolute;
+    padding: 0;
+    z-index: 100;
+    align-content: center;
+    justify-content: center;
+}
+
+.popup-final img {
+    width: 1000px;
+    margin-top: 016px;
+    height: auto;
+}
+
+.popup-final button {
+    position: absolute;
+    top:0%;
+    right: 0%;
+    padding: 0 15px;
+    font-size: 14px;
+    color: rgb(197, 0, 0);
+    cursor: pointer;
+    border: none;
+    background-color: rgb(197, 0, 0);
+}
+
+.popup-final .top {
+    position: absolute;
+    top: 0%;
+    left:0%;
+    width: 1000px;
+    height: 16px;
+    border-bottom: solid black 0.3px;
+    background-color: rgba(0, 0, 0, 0.02);
+}   
+
+
 
 /* .popup .text-box {
     position: absolute;
