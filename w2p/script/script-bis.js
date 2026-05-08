@@ -22,7 +22,7 @@ resetCalled = 0
 time = 150
 text = ""
 let popupSelected = 0
-let maxPopUps = 8 // Numero de popups + 1 (Randomizador)
+let maxPopUps = 7 // Numero de popups + 1 (Randomizador)
 let zIndex = 20
 
 let popDone = []
@@ -246,6 +246,10 @@ function revealer() {
         colonnes.style.marginBottom = "0em"
         container.style.gridArea = "4 / 4 / 6 / 6";
         display --
+        setTimeout(() => {
+            popDone = []
+            randomPopUp()
+        }, Math.floor(Math.random() * 5000))
     }
 }
 
@@ -260,16 +264,12 @@ function randomPopUp() {
  
         if (popDone.length === maxPopUps) {
             return
-        }
- 
-        for (i = 0; i < popDone.length; i++) {
-            if (popDone.length != maxPopUps) {
-                if (popDone[i] === popupNow) {
-                    randomPopUp()
+        } else {
+            while (popDone.includes(popupNow)) {
+                    popupNow = Math.floor(Math.random() * maxPopUps)
                 }
-            }
-        } 
- 
+        }
+
         popDone.push(popupNow)
         console.log(popDone)
  
@@ -277,32 +277,17 @@ function randomPopUp() {
  
         if (display === 0) {
             if (popper.className === "popup" || popper.className === "popup-black") {
-                    distancetop = Math.floor(Math.random() * 45)
-                    distanceleft = Math.floor(Math.random() * 67)
+                    distancetop = Math.floor(Math.random() * 60)
+                    distanceleft = Math.floor(Math.random() * 23)
             } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
-                    distancetop = Math.floor(Math.random() * 21)
-                    distanceleft = Math.floor(Math.random() * 67)
+                    distancetop = Math.floor(Math.random() * 47)
+                    distanceleft = Math.floor(Math.random() * 23)
             }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
-                    distancetop = Math.floor(Math.random() * 45)
-                    distanceleft = Math.floor(Math.random() * 52) 
-            } if (popper.className === "popup-final") {
-                    distancetop = 72
-                    distanceleft = 15
+                    distancetop = Math.floor(Math.random() * 75)
+                    distanceleft = Math.floor(Math.random() * 23) 
             }
         } else {
-            if (popper.className === "popup" || popper.className === "popup-black") {
-                    distancetop = Math.floor(Math.random() * 115)
-                    distanceleft = Math.floor(Math.random() * 67)
-            } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
-                    distancetop = Math.floor(Math.random() * 91) 
-                    distanceleft = Math.floor(Math.random() * 67)
-            }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
-                    distancetop = Math.floor(Math.random() * 115)
-                    distanceleft = Math.floor(Math.random() * 52) 
-            } if (popper.className === "popup-final") {
-                    distancetop = 160
-                    distanceleft = 15
-            }
+            return
         }
  
         // Forzar re-trigger de la animación CSS

@@ -7,16 +7,16 @@
         <title> Edition Collective </title>
 
         <script>
-            if (window.innerWidth < 1000) {
-              window.location = "index-bis.html";
+            if (window.innerWidth > 1000) {
+              window.location = "index.html";
             }
         </script>
     
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script src="script/script.js"></script>
-        <link rel="stylesheet" href="css/style.css">
+        <script src="script/script-bis.js"></script>
+        <link rel="stylesheet" href="css/style-bis.css">
 </head>
 
 
@@ -71,13 +71,6 @@
                     <button onclick="closePopUp6()"> X </button>
                 </div>
                 <img id="popup-0" src="popup/popup_7.png">
-            </div>
-
-            <div class="popup-final" id="popup-7" style="display: none">
-                <div class="top">
-                    <button onclick="closePopUp7()"> X </button>
-                </div>
-                <img id="popup-0" src="popup/popup_final.png">
             </div>
         </div>
     
@@ -146,9 +139,9 @@
             <div class="colonnes" id="colonnes"></div>
 
             <div class="abajo-info" id="abajo-info-esp">
-                <p class="langues" id="langues"><a onclick="espReveal()">Esp</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a onclick="frReveal()">Fr</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a onclick="engReveal()">Eng</a></p>
+                <p class="langues" id="langues"><a onclick="espReveal()">Esp</a>   / <a onclick="frReveal()">Fr</a>   /  <a onclick="engReveal()">Eng</a></p>
                 <!--<p class="web2" id="web2"><a href="indexedjs.html" onclick = "" target="blank">Print</a></p>-->
-                <p class="web2" id="web2"><a>Print Todavia No Disponible</a></p>
+                <p class="web2" id="web2"><a onclick="popup('indexedjs.html')">Print</a></p>
             </div>
         </div>
 
@@ -213,7 +206,7 @@
 
             <div class="abajo-info" id="abajo-info-fr">
                 <p class="langues" id="langues"><a onclick="espReveal()">Esp</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a onclick="frReveal()">Fr</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a onclick="engReveal()">Eng</a></p>
-                <p class="web2" id="web2"><a href="indexedjs.html" onclick = "" target="blank">Print Pas Encore Disponible...</a></p>
+                <p class="web2" id="web2"><a href="indexedjs.html" onclick = "" target="blank">Print</a></p>
             </div>
         </div>
 
@@ -277,7 +270,7 @@
 
             <div class="abajo-info" id="abajo-info-eng">
                 <p class="langues" id="langues"><a onclick="espReveal()">Esp</a>&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp <a onclick="frReveal()">Fr</a>&nbsp;&nbsp;&nbsp;&nbsp;  / &nbsp;&nbsp;&nbsp;&nbsp; <a onclick="engReveal()">Eng</a></p>
-                <p class="web2" id="web-esp"><a href="indexedjs.html" onclick = "" target="blank">Print Not Available Yet...</a></p>
+                <p class="web2" id="web-esp"><a href="indexedjs.html" onclick = "" target="blank">Print</a></p>
                 <!-- <p class="web2" id="web-fr"><a href="indexedjs_fr.html" onclick = "" target="blank">Print</a></p>
                 <p class="web2" id="web-eng"><a href="indexedjs_eng.html" onclick = "" target="blank">Print</a></p> -->
             </div>
