@@ -22,7 +22,7 @@ resetCalled = 0
 time = 150
 text = ""
 let popupSelected = 0
-let maxPopUps = 8 // Numero de popups + 1 (Randomizador)
+let maxPopUps = 32 // Numero de popups + 1 (Randomizador)
 let zIndex = 20
 
 let popDone = []
@@ -253,125 +253,77 @@ let popupCount = 0
 const popupInitialDelay = 5000   // delay máximo del primer popup
 const popupMinDelay = 400        // delay mínimo al final
 const popupAccelStep = 600       // cuánto se reduce el máximo por cada popup
- 
+
 function randomPopUp() {
-        zIndex ++
-        popupNow = Math.floor(Math.random() * maxPopUps)
- 
-        if (popDone.length === maxPopUps) {
-            return
-        }
- 
-        for (i = 0; i < popDone.length; i++) {
-            if (popDone.length != maxPopUps) {
-                if (popDone[i] === popupNow) {
-                    randomPopUp()
-                }
-            }
-        } 
- 
-        popDone.push(popupNow)
-        console.log(popDone)
- 
-        let popper = document.getElementById('popup-' + popupNow);
- 
-        if (display === 0) {
-            if (popper.className === "popup" || popper.className === "popup-black") {
-                    distancetop = Math.floor(Math.random() * 45)
-                    distanceleft = Math.floor(Math.random() * 67)
-            } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
-                    distancetop = Math.floor(Math.random() * 21)
-                    distanceleft = Math.floor(Math.random() * 67)
-            }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
-                    distancetop = Math.floor(Math.random() * 45)
-                    distanceleft = Math.floor(Math.random() * 52) 
-            } if (popper.className === "popup-final") {
-                    distancetop = 72
-                    distanceleft = 15
-            }
-        } else {
-            if (popper.className === "popup" || popper.className === "popup-black") {
-                    distancetop = Math.floor(Math.random() * 115)
-                    distanceleft = Math.floor(Math.random() * 67)
-            } if (popper.className === "popup-long" || popper.className === "popup-long-black") {
-                    distancetop = Math.floor(Math.random() * 91) 
-                    distanceleft = Math.floor(Math.random() * 67)
-            }  if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
-                    distancetop = Math.floor(Math.random() * 115)
-                    distanceleft = Math.floor(Math.random() * 52) 
-            } if (popper.className === "popup-final") {
-                    distancetop = 160
-                    distanceleft = 15
-            }
-        }
- 
-        // Forzar re-trigger de la animación CSS
-        popper.style.animation = 'none'
-        popper.offsetHeight // reflow
-        popper.style.animation = ''
-        
-        popper.style.display = 'inherit';
-        popper.style.top = distancetop + '%';
-        popper.style.left = distanceleft + '%';
-        popper.style.zIndex = zIndex;
-        console.log(distancetop)
- 
-        // Calcular el siguiente delay: cada popup reduce el máximo en popupAccelStep
-        popupCount++
+    if (popDone.length >= maxPopUps) return
+    if (display !== 0) return
+
+    zIndex++
+
+    // ✅ Filtramos directamente los disponibles, sin while loop
+    const allIds = Array.from({length: maxPopUps}, (_, i) => i)
+    const remaining = allIds.filter(id => !popDone.includes(id))
+    if (remaining.length === 0) return
+
+    const popupNow = remaining[Math.floor(Math.random() * remaining.length)]
+    popDone.push(popupNow)
+    console.log(popDone)
+
+    const popper = document.getElementById('popup-' + popupNow)
+    if (!popper) {
+        // Este ID no existe en el DOM, saltar al siguiente
         const maxDelay = Math.max(popupMinDelay, popupInitialDelay - (popupCount * popupAccelStep))
         const nextDelay = Math.floor(Math.random() * maxDelay) + popupMinDelay
+        setTimeout(randomPopUp, nextDelay)
+        return
+    }
+
+    if (popper.className === "popup" || popper.className === "popup-black") {
+        distancetop = Math.floor(Math.random() * 45)
+        distanceleft = Math.floor(Math.random() * 67)
+    } else if (popper.className === "popup-long" || popper.className === "popup-long-black") {
+        distancetop = Math.floor(Math.random() * 21)
+        distanceleft = Math.floor(Math.random() * 67)
+    } else if (popper.className === "popup-wide" || popper.className === "popup-wide-black") {
+        distancetop = Math.floor(Math.random() * 45)
+        distanceleft = Math.floor(Math.random() * 52)
+    } else if (popper.className === "popup-final") {
+        distancetop = Math.floor(Math.random() * 72)
+        distanceleft = Math.floor(Math.random() * 15)
+
+    }
+
+    popper.style.animation = 'none'
+    popper.offsetHeight
+    popper.style.animation = ''
+
+    popper.style.display = 'inherit'
+    popper.style.top = distancetop + '%'
+    popper.style.left = distanceleft + '%'
+    popper.style.zIndex = zIndex
+    console.log(distancetop)
+
+    popupCount++
+    const maxDelay = Math.max(popupMinDelay, popupInitialDelay - (popupCount * popupAccelStep))
+    const nextDelay = Math.floor(Math.random() * maxDelay) + popupMinDelay
+
+    // ✅ setTimeout garantiza que nunca hay recursión sincrónica
+    setTimeout(randomPopUp, nextDelay)
+}
  
-        setTimeout(() => {
-            randomPopUp()
-        }, nextDelay)
+function closePopUp(id) {
+    // Acepta llamada directa closePopUp(3) o desde los wrappers legacy
+    const target = (id !== undefined) ? id : popupSelected
+    const popper = document.getElementById('popup-' + target)
+    if (popper) popper.style.display = 'none'
 }
 
 
-function closePopUp0() {
-    console.log("closePopUp0")
-    popupSelected = 0
-    closePopUp()
-}
-
-function closePopUp1() {
-    popupSelected = 1
-    closePopUp()
-}
-
-function closePopUp2() {
-    popupSelected = 2
-    closePopUp()
-}
-
-function closePopUp3() {
-    popupSelected = 3
-    closePopUp()
-}
-
-function closePopUp4() {
-    popupSelected = 4
-    closePopUp()
-}
-
-function closePopUp5() {
-    popupSelected = 5
-    closePopUp()
-}
-
-function closePopUp6() {
-    popupSelected = 6
-    closePopUp()
-}
-
-
-function closePopUp7() {
-    popupSelected = 7
-    closePopUp()
-}
-
-
-
-function closePopUp() {
-    popper = document.getElementById('popup-' + popupSelected);
-    popper.style.display = 'none';
-}
+function closePopUp0() { closePopUp(0) }
+function closePopUp1() { closePopUp(1) }
+function closePopUp2() { closePopUp(2) }
+function closePopUp3() { closePopUp(3) }
+function closePopUp4() { closePopUp(4) }
+function closePopUp5() { closePopUp(5) }
+function closePopUp6() { closePopUp(6) }
+function closePopUp7() { closePopUp(7) }
