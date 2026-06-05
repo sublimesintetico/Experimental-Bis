@@ -132,12 +132,17 @@ function noshow() {
 
 function mostrarInfo() {
 	info = document.getElementById('info')
+	mostrar =  document.getElementById('mostrar')
+	nomostrar =  document.getElementById('nomostrar')
 	
 	if (display === 0) {
 		info.style.display = 'block';
+		mostrar.style.display = "none";
+		nomostrar.style.display = "none";
 		display = 1
 	} else {
 		info.style.display = 'none';
+		nomostrar.style.display = "block";
 		display = 0
 	}
 }
