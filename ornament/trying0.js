@@ -295,6 +295,11 @@ async function orar() {
         pdf.addImage(imgData, "JPEG", offsetX, offsetY, finalW, finalH);
         const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
+		const downloadLink = document.createElement("a");
+		downloadLink.href = "data:application/pdf;base64," + pdfBase64;
+		downloadLink.download = `oracion-${fecha.replace(/[/,: ]/g, "-")}.pdf`;
+		downloadLink.click();
+
         // Conteo de ornamentos
         const imgs = grilla.querySelectorAll("img");
         const conteo = {};
