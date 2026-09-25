@@ -356,23 +356,22 @@ async function orar() {
 
         if (!res.ok) throw new Error(`API error: ${res.status}`);
 
+        const resData = await res.json();
+        console.log("Resend ids:", resData.resendIds);
+
         boton.textContent = "Oración enviada";
+        // Recargamos la página: esto limpia solo el ornamento de la grilla
+        // (y de paso resetea el popup, el input, etc. a su estado inicial).
         setTimeout(() => {
-            boton.textContent = "Oré";
-            boton.disabled = false;
-            const popup = document.getElementById("popup");
-            const hinchapelotas = document.getElementById("hinchapelotas");
-            popup.style.display = "none";
-            if (hinchapelotas) hinchapelotas.style.display = "none";
-            if (emailInput) emailInput.value = "";
-        }, 3000);
+            window.location.reload();
+        }, 1200);
 
     } catch (err) {
         console.error("Error al orar:", err);
         boton.textContent = "Error — intentá de nuevo";
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Oré"), 3000);
-        // No cerramos el popup acá: si falló, lo dejamos abierto para
-        // que se vea el mensaje de error y se pueda reintentar.
+        // Si falló, NO recargamos: dejamos el popup abierto para reintentar
+        // sin perder lo que ya escribiste.
     }
 }
