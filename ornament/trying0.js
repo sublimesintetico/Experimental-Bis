@@ -361,7 +361,9 @@ async function orar() {
             boton.textContent = "Oré";
             boton.disabled = false;
             const popup = document.getElementById("popup");
+            const hinchapelotas = document.getElementById("hinchapelotas");
             popup.style.display = "none";
+            if (hinchapelotas) hinchapelotas.style.display = "none";
             if (emailInput) emailInput.value = "";
         }, 3000);
 
@@ -370,10 +372,7 @@ async function orar() {
         boton.textContent = "Error — intentá de nuevo";
         boton.disabled = false;
         setTimeout(() => (boton.textContent = "Oré"), 3000);
+        // No cerramos el popup acá: si falló, lo dejamos abierto para
+        // que se vea el mensaje de error y se pueda reintentar.
     }
-
-	const popup = document.getElementById("popup");
-	popup.style.display = "none";
-	const hinchapelotas = document.getElementById("hinchapelotas");
-	hinchapelotas.style.display = "none";
 }
