@@ -18,15 +18,27 @@
 
             <div id="grid" class="container1">
                 <div class='form' style="display: flex; grid-area: 25 / 2 / 27 / 27; justify-content: center; align-items: center; z-index: 9999999; margin-top: 0.5em;">
-                    <form class='form' id="" autocomplete="off" style="z-index: 9999999;grid-area: 26 / 2 / 27 / 27; margin-bottom: 1em;">
+                    <form class='form' id="" autocomplete="off" style="z-index: 9999999;grid-area: 26 / 2 / 27 / 27; margin-bottom: 1em;" onsubmit="return false;">
                     <input type="text" id="texto-input" placeholder="Que querés?">
+                    </form>
                 </div>
                                 
                 <div style="display: flex; grid-area: 27 / 2 / 27 / 27; justify-content: center; align-items: center; z-index: 9999999; margin-bottom: 1em">
-                    <button class="print-button" id="print-button" onclick="orar()">
+                    <button type="button" class="print-button" id="print-button" onclick="oracion()">
                         Orar
                     </button>  
                 </div>
+
+                <div id="hinchapelotas" style="grid-area: 2 / 2 / 27 / 27; display: none; z-index: 999999999; align-items: center; justify-items: center;">
+                    <div class="popup" id="popup" style="display: none; z-index: 999999999;">
+                        <input type="text" id="texto-input-mail" placeholder="Escribí tu mail" style="margin-bottom: 1.3em;">
+
+                        <button type="button" class="print" id="print" onclick="orar()">
+                            Oré
+                        </button>  
+                    </div>
+                </div>
+                
             </div>
         
         <div id="grid2" class="container2">

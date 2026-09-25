@@ -38,6 +38,17 @@ p{
     }
 }
 
+
+
+.popup {
+    width: 300px;
+    height: 140px;
+    background-color: white;
+    border: solid black 0.3px;
+    align-content: center;
+    justify-content: center;
+}
+
 .container2 {
     display: grid;
     grid-template-rows: repeat(25, minmax(26px, 28px));

@@ -9,8 +9,19 @@ function gridDefine() {
     const width = window.innerWidth / 4;
     const height = window.innerHeight ;
 
+	const popup = document.getElementById('popup')
+
     columnSize = Math.floor(width / 8) -2;
     row = Math.floor(height / 8) -2;
+
+	popPaddingLeft = Math.floor(width / 2) - 300;
+	popPaddingTop = Math.floor(height / 2) - 180;
+
+	popup.style.marginLeft = `${popPaddingLeft} px`;
+	popup.style.marginTop = `${popPaddingTop} px`;
+
+		console.log(`Pop Margin Left: ${popPaddingLeft}px ${popPaddingTop}px Top`);
+
 
     root.style.gridTemplateColumns = `repeat(8, ${columnSize}px)`;
     root.style.gridTemplateRows = `repeat(8, ${row}px)`;
@@ -231,12 +242,32 @@ function escribirType() {
 	})
 }
 
+function oracion(){
+	const hinchapelotas = document.getElementById("hinchapelotas");
+	const popup = document.getElementById("popup");
+	popup.style.display = "inherit";
+	hinchapelotas.style.display = "inherit";
+	const emailInput = document.getElementById("texto-input-mail");
+	if (emailInput) emailInput.focus();
+}
+
+function emailValido(email) {
+	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 async function orar() {
-    const boton = document.getElementById("print-button");
+    const boton = document.getElementById("print");
     const textoInput = document.getElementById("texto-input");
+    const emailInput = document.getElementById("texto-input-mail");
     const texto = textoInput?.value?.trim() || "(sin texto)";
+    const emailDestino = emailInput?.value?.trim() || "";
     const fecha = new Date().toLocaleString("es-AR", { dateStyle: "long", timeStyle: "short" });
+
+    if (!emailValido(emailDestino)) {
+        boton.textContent = "Email inválido";
+        setTimeout(() => (boton.textContent = "Orar"), 2000);
+        return;
+    }
 
     boton.textContent = "Orando...";
     boton.disabled = true;
@@ -320,21 +351,29 @@ async function orar() {
         const res = await fetch("https://experimental.sublimesintetico.com/api/orar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha }),
+            body: JSON.stringify({ texto, descripcion, imagen: pdfBase64, fecha, emailDestino }),
         });
 
         if (!res.ok) throw new Error(`API error: ${res.status}`);
 
         boton.textContent = "Oración enviada";
         setTimeout(() => {
-            boton.textContent = "Orar";
+            boton.textContent = "Oré";
             boton.disabled = false;
+            const popup = document.getElementById("popup");
+            popup.style.display = "none";
+            if (emailInput) emailInput.value = "";
         }, 3000);
 
     } catch (err) {
         console.error("Error al orar:", err);
         boton.textContent = "Error — intentá de nuevo";
         boton.disabled = false;
-        setTimeout(() => (boton.textContent = "Orar"), 3000);
+        setTimeout(() => (boton.textContent = "Oré"), 3000);
     }
+
+	const popup = document.getElementById("popup");
+	popup.style.display = "none";
+	const hinchapelotas = document.getElementById("hinchapelotas");
+	hinchapelotas.style.display = "none";
 }
